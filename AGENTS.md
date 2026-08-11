@@ -140,10 +140,17 @@ In addition:
   configuration.
 - **Keep third-party vendor binaries out of git** — fetch them with build scripts,
   pinned by SHA-256.
+- **Found a secret in the repository? Report it to the owner. Do not remove it
+  yourself, and never without his knowledge.** Three reasons: it may be a deliberate
+  exception (see below); deleting it from the working tree does not remove it from git
+  history, and creates a false impression that the leak is closed; and revoking and
+  replacing a compromised key is an action in external systems that only the owner can
+  take. The agent's job is to notice and say so — naming the exact file and commit —
+  then let him decide.
 - **A deliberate exception is possible, but only an explicit one.** If something that
   looks like a secret is committed on purpose, it is recorded under the project's
-  "Settled decisions" with its reason. Without that record the next agent will treat it
-  as a leak and delete it.
+  "Settled decisions" with its reason. Without that record, every later agent will keep
+  raising it as a leak.
 
 ## 7. Settled decisions
 
