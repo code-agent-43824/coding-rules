@@ -1,208 +1,214 @@
-# AGENTS.md — правила для кодинг-агентов
+# AGENTS.md — rules for coding agents
 
-Канонический свод правил владельца для всех его проектов. Копируется в репозиторий
-как есть; проектная специфика дописывается в раздел [«Приложение»](#приложение--что-дописать-в-конкретном-проекте).
+The owner's canonical rules, shared by all of his projects. Copy this file into a
+repository as is; anything project-specific goes in the [Appendix](#appendix--what-to-add-per-project).
 
-## 0. Как устроены правила
+## 0. How the rules are organised
 
-- **`AGENTS.md` — единственный источник правил.** Его читают все агенты: Claude Code,
+- **`AGENTS.md` is the single source of rules.** Every agent reads it: Claude Code,
   Codex, Copilot, Gemini.
-- **`CLAUDE.md`, `.github/copilot-instructions.md`, `GEMINI.md` — не дублируют правила.**
-  В них либо ссылка в одну строку на этот файл, либо карта кода (архитектура,
-  команды, подводные камни) — то, чего здесь нет. Пересказ правил запрещён: две копии
-  всегда расходятся, и агент начинает выполнять устаревшую.
-- **Правила проекта дополняют этот файл, но не переопределяют.** Если проект вынужден
-  отступить от общего правила — отступление пишется явно, с причиной, в разделе
-  «Отступления» проектного `AGENTS.md`. Молчаливое отступление считается ошибкой.
-- Если владелец в конкретной задаче просит иное — это его решение, оно не нарушает
-  правило и не требует правки этого файла.
+- **`CLAUDE.md`, `.github/copilot-instructions.md` and `GEMINI.md` do not restate the
+  rules.** They hold either a one-line pointer to this file or a map of the code
+  (architecture, commands, pitfalls) — what is *not* here. Restating is forbidden: two
+  copies always drift apart, and an agent ends up following the stale one.
+- **Project rules extend this file; they do not override it.** Where a project has to
+  depart from a shared rule, the departure is stated explicitly, with its reason, under
+  "Departures" in the project's `AGENTS.md`. A silent departure is a mistake.
+- If the owner asks for something different on a specific task, that is his call — it
+  breaks no rule and needs no change to this file.
 
 ---
 
 ## 1. Git
 
-- **Одна рабочая ветка — ствол репозитория** (`main`, в старых репозиториях `master`;
-  смысл один). **Веток не создавать, pull request'ы не открывать.** Всё коммитится
-  в ствол.
-- **Каждый завершённый логический шаг — отдельный коммит, сразу с `push`.** Не копить
-  работу в один большой коммит и не смешивать несвязанные правки.
-- **Ствол всегда зелёный.** Коммит, который ломает сборку, тесты или линтер, в ствол
-  не идёт. Если ствол уже красный — починить его важнее текущей задачи.
-- **Перед началом работы — `git fetch`** и убедиться, что локальный ствол не отстаёт:
-  в репозитории могут работать другие агенты.
-- **Перед коммитом — `git diff --check` и `git status`.** Не втягивать чужие,
-  временные и сгенерированные файлы.
-- **Сообщения коммитов — [Conventional Commits](https://www.conventionalcommits.org/),
-  по-английски:** `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `ci:`, `test:`.
-  Сообщение объясняет, *что и зачем*, и понятно без диффа.
-- **Git — обычными прямыми командами.** GitHub API — только на чтение (статусы, логи,
-  релизы, артефакты).
+- **One working branch — the repository's trunk** (`main`, or `master` in older
+  repositories; same thing). **Do not create branches. Do not open pull requests.**
+  Everything is committed to the trunk.
+- **Each completed logical step is its own commit, pushed immediately.** Do not
+  accumulate work into one large commit, and do not mix unrelated changes.
+- **The trunk is always green.** A commit that breaks the build, the tests or the
+  linter does not go into the trunk. If the trunk is already red, fixing it comes
+  before the current task.
+- **`git fetch` before starting work**, and make sure the local trunk is not behind:
+  other agents may be working in the same repository.
+- **Before committing, run `git diff --check` and `git status`.** Do not sweep in
+  other agents' files, temporary files or generated output.
+- **Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/)
+  and are written in English:** `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `ci:`,
+  `test:`. The message says *what and why*, and stands on its own without the diff.
+- **Use plain git commands.** The GitHub API is for reading only — statuses, logs,
+  releases, artifacts.
 
-## 2. Документы проекта
+## 2. Project documents
 
-Шесть документов, у каждого один вопрос, на который он отвечает. **Один факт живёт
-в одном документе.** Сомневаешься, куда писать, — решает эта таблица.
+Six documents. Each answers exactly one question. **A given fact lives in exactly one
+of them.** When unsure where something belongs, this table decides.
 
-| Документ | Отвечает на вопрос | Как живёт |
+| Document | Answers | How it lives |
 | --- | --- | --- |
-| `docs/ROADMAP.md` | **Куда идём.** Что за продукт, из каких этапов состоит путь и в каком они порядке | Долгоживущий, меняется редко и осознанно |
-| `docs/PLAN.md` | **Что делаем на текущем этапе.** Конкретные действия с чекбоксами `[ ]` / `[~]` / `[x]` / `[!]` | Живёт до закрытия этапа, потом переписывается под следующий |
-| `docs/STATUS.md` | **В каком состоянии проект прямо сейчас.** Что работает, что сломано, текущая версия, где остановились | Один экран, перезаписывается |
-| `docs/WORKLOG.md` | **Что делали.** По записи на кусок работы: план → сделано → следующее | Append-only, новое сверху |
-| `docs/JOURNAL.md` | **Что узнали.** Гипотеза → что сделали → результат проверки → вывод | Append-only, новое сверху |
-| `HANDOFF.md` | **Что не доделано прямо сейчас.** Единственное состояние незавершённой работы и точный следующий шаг | Перезаписывается; когда всё закончено, так и написано |
+| `docs/ROADMAP.md` | **Where we are going.** What the product is, which stages the path has, in what order | Long-lived; changes rarely and deliberately |
+| `docs/PLAN.md` | **What we are doing in the current stage.** Concrete actions with `[ ]` / `[~]` / `[x]` / `[!]` checkboxes | Lives until the stage closes, then is rewritten for the next one |
+| `docs/STATUS.md` | **What state the project is in right now.** What works, what is broken, current version, where work stopped | One screen; overwritten |
+| `docs/WORKLOG.md` | **What we did.** One entry per chunk of work: plan → done → next | Append-only, newest on top |
+| `docs/JOURNAL.md` | **What we learned.** Hypothesis → what we did → what the check showed → conclusion | Append-only, newest on top |
+| `HANDOFF.md` | **What is unfinished right now.** The single state of in-flight work and the exact next step | Overwritten; when nothing is in flight, it says so |
 
-`AGENTS.md` и `HANDOFF.md` лежат в корне — их читают первыми. Остальное в `docs/`.
+`AGENTS.md` and `HANDOFF.md` live in the repository root — they are read first.
+Everything else lives in `docs/`.
 
-**`WORKLOG` против `JOURNAL` — самая частая путаница.** Разница не в подробности,
-а в природе записи:
+**`WORKLOG` vs `JOURNAL` is the easy one to get wrong.** The difference is not how
+detailed the entry is, but what kind of record it is:
 
-- `WORKLOG` — **операционный**: что я собирался сделать, что сделал, что осталось.
-  Нужен, чтобы прерванную работу подхватил следующий агент. Починил опечатку —
-  строка в worklog.
-- `JOURNAL` — **о знании**: что мы теперь знаем о проекте, чего не знали вчера.
-  Проверил гипотезу на живом устройстве, выяснил причину бага, закрыл спорный
-  вопрос — запись в journal. Рутинная правка в journal не попадает.
+- `WORKLOG` is **operational**: what I set out to do, what I did, what is left. It
+  exists so the next agent can pick up interrupted work. Fixed a typo → a worklog line.
+- `JOURNAL` is **about knowledge**: what we now know about the project that we did not
+  know yesterday. Tested a hypothesis on real hardware, found the cause of a bug,
+  settled a contested question → a journal entry. Routine edits never reach it.
 
-Правила для документов:
+Rules for the documents:
 
-- **Неудачные попытки из `JOURNAL` не удалять.** Каждая закрывает гипотезу, к которой
-  иначе вернёшься снова.
-- **Документы-снимки (`STATUS`, `HANDOFF`) сами не обновляются.** Проверил или изменил
-  реальное состояние — сверь и обнови документ в этой же сессии, не оставляй
-  устаревшую запись до отдельного запроса.
-- **Что не записано — то не начато.** Незаписанная работа не существует для
-  следующего агента.
-- **Код и документация разошлись — чинить документацию в том же изменении.**
-- Документ создаётся при первой надобности. Пустые файлы заранее не плодить.
+- **Never delete failed attempts from `JOURNAL`.** Each one closes off a hypothesis you
+  would otherwise return to.
+- **Snapshot documents (`STATUS`, `HANDOFF`) do not update themselves.** When you check
+  or change the real state, reconcile the document in the same session — do not leave a
+  stale entry until someone asks.
+- **What is not written down was not started.** Unrecorded work does not exist for the
+  next agent.
+- **When code and documentation disagree, fix the documentation in the same change.**
+- Create a document when it is first needed. Do not pre-create empty files.
 
-## 3. Порядок работы
+## 3. Order of work
 
-1. **Прочитать:** `AGENTS.md`, `HANDOFF.md`, `docs/STATUS.md`, `docs/PLAN.md`
-   и верхние записи `docs/JOURNAL.md`.
-2. **Записать намерение до кода.** Действие вписывается в `docs/PLAN.md` со статусом
-   `[ ]`/`[~]`, замысел — в `docs/WORKLOG.md`. **Это коммитится отдельно, до того как
-   тронут код** — такой коммит всегда зелёный и не мешает правилу зелёного ствола.
-3. **Сделать работу.**
-4. **Проверить** — соразмерно риску изменения (см. §4).
-5. **Записать результат в том же изменении, что и код:** `WORKLOG` (сделано /
-   следующее), `PLAN` (статус `[x]`/`[!]`), `STATUS` (если изменилось состояние
-   проекта), `JOURNAL` (если узнали что-то новое), `HANDOFF` (если останавливаешься,
-   не закончив).
+1. **Read:** `AGENTS.md`, `HANDOFF.md`, `docs/STATUS.md`, `docs/PLAN.md`, and the
+   top entries of `docs/JOURNAL.md`.
+2. **Write down the intent before the code.** The action goes into `docs/PLAN.md` as
+   `[ ]`/`[~]`; the reasoning goes into `docs/WORKLOG.md`. **Commit this separately,
+   before touching any code** — a docs-only commit is always green, so it never
+   conflicts with the green-trunk rule.
+3. **Do the work.**
+4. **Verify it** — proportionally to the risk of the change (see §4).
+5. **Record the result in the same change as the code:** `WORKLOG` (done / next),
+   `PLAN` (status `[x]`/`[!]`), `STATUS` (if the project's state changed), `JOURNAL`
+   (if something was learned), `HANDOFF` (if you are stopping before finishing).
 
-Цель: следующий агент понимает **что планировалось, что сделано и что дальше — из
-одних документов**, не читая дифф.
+The goal: the next agent can tell **what was planned, what shipped and what is next
+from the documents alone**, without reading the diff.
 
-## 4. Проверка и честность отчёта
+## 4. Verification and honest reporting
 
-- **Не выдавать непроверенное за проверенное.** Не смог запустить тесты — нет SDK
-  в контейнере, нет устройства, нет доступа — скажи это прямо. Умолчание читается
-  как «проверено».
-- **Зелёный статус CI — не доказательство.** Для сборочных и деплойных изменений
-  смотреть фактические логи и артефакты, а не только галочку.
-- **Симуляция не превращается в утверждение о железе или безопасности.** Фейки
-  и эмуляторы проверяют логику, а не работу с реальным устройством.
-- **Пробелы закрываются данными, а не рассуждением.** Не вносить в алгоритм признаки,
-  которых нет в подтверждённых фактах: правки «по догадке» уже давали неверный
-  результат.
-- **Не выдумывать содержимое предметной области** — текст закона, экспертные
-  комментарии, показания приборов, значения констант.
-- **Отчитываться о фактическом результате.** Тесты упали — показать вывод. Шаг
-  пропущен — сказать, что пропущен. Часть работы заблокирована — доделать остальное
-  и явно назвать невыполненное.
+- **Never present the unverified as verified.** If you could not run the tests — no SDK
+  in the container, no device, no access — say so plainly. Silence reads as "checked".
+- **A green CI badge is not proof.** For build and deployment changes, read the actual
+  logs and artifacts, not just the checkmark.
+- **Simulation does not become a claim about hardware or security.** Fakes and
+  emulators exercise logic, not real devices.
+- **Close gaps with data, not reasoning.** Do not put into an algorithm any property
+  that is not in the confirmed facts: guessed changes have already produced wrong
+  results.
+- **Do not invent domain content** — statute text, expert commentary, instrument
+  readings, constant values.
+- **Report the actual outcome.** Tests failed — show the output. A step was skipped —
+  say it was skipped. Part of the work is blocked — finish everything else and state
+  explicitly what was left undone.
 
-## 5. Деплой
+## 5. Deployment
 
-Кто деплоит — определяется тем, **нужны ли ручные работы на сервере**:
+Who deploys depends on **whether the deployment needs manual work on the server**:
 
-- **Проект деплоится сам по CI** (пайплайн настроен, ручных шагов нет) — **деплой
-  разрешён любому агенту**.
-- **Деплой требует ручных работ на сервере** — **деплоит только Watson.** Остальные
-  агенты к продакшн-серверу не прикасаются.
+- **The project deploys itself through CI** (pipeline configured, no manual steps) —
+  **any agent may deploy.**
+- **Deployment requires manual work on the server** — **only Watson deploys.** Other
+  agents do not touch the production server.
 
-Дополнительно:
+In addition:
 
-- **Если пуш в ствол = деплой в прод, это пишется в правилах проекта явно.** В таких
-  проектах промежуточной среды нет, и правило зелёного ствола становится критичным:
-  красный коммит — это сломанный прод.
-- **Не создавать deploy-ключи, серверные учётные данные и релизные джобы** без явного
-  решения владельца. Изменение в репозитории само по себе не разрешение на деплой.
-- **Разрушительные операции на общих ресурсах запрещены.** Если ресурс делится
-  с другими проектами (общий вебрут, общая база, общий хост) — работать только
-  предусмотренным скриптом деплоя, никаких `rsync --delete` по всему каталогу;
-  незнакомые каталоги считать чужими и сохранять.
-- **После деплоя проверить, что живо** — и свой проект, и соседние на том же ресурсе.
+- **If a push to the trunk means a production deploy, the project's rules say so
+  explicitly.** Such projects have no staging environment, which makes the green-trunk
+  rule critical: a red commit is a broken production.
+- **Do not create deploy keys, server credentials or release jobs** without an explicit
+  decision from the owner. A change in the repository is never permission to deploy it.
+- **Destructive operations on shared resources are forbidden.** Where a resource is
+  shared with other projects — a common webroot, a shared database, a shared host — use
+  only the deployment script provided; no `rsync --delete` over a whole directory.
+  Treat unfamiliar directories as someone else's and preserve them.
+- **After deploying, verify what is live** — both your project and its neighbours on the
+  same resource.
 
-## 6. Секреты
+## 6. Secrets
 
-- **Никогда не коммитить** учётные данные, токены, приватные ключи, персональные
-  данные и продакшн-конфигурацию.
-- **Бинарники сторонних вендоров в git не класть** — тянуть сборочными скриптами
-  с фиксацией по SHA-256.
-- **Осознанное исключение возможно, но только явное.** Если что-то похожее на секрет
-  закоммичено намеренно — это записывается в «Зафиксированные решения» проекта
-  с причиной. Без записи следующий агент примет это за утечку и удалит.
+- **Never commit** credentials, tokens, private keys, personal data or production
+  configuration.
+- **Keep third-party vendor binaries out of git** — fetch them with build scripts,
+  pinned by SHA-256.
+- **A deliberate exception is possible, but only an explicit one.** If something that
+  looks like a secret is committed on purpose, it is recorded under the project's
+  "Settled decisions" with its reason. Without that record the next agent will treat it
+  as a leak and delete it.
 
-## 7. Зафиксированные решения
+## 7. Settled decisions
 
-В правилах каждого проекта есть раздел **«Зафиксированные решения»** — то, что принято
-осознанно и выглядит как ошибка для свежего взгляда.
+Every project's rules carry a **"Settled decisions"** section: things decided
+deliberately that look like mistakes to a fresh pair of eyes.
 
-- **Каждое решение записывается вместе с причиной.** Причина обязательна: без неё
-  следующий агент снесёт решение как мусор.
-- **Такие решения не переоткрываются по инициативе агента.** Отменяет их только
-  владелец.
-- Сюда же попадают закрытые темы — вопросы, которые уже обсуждались и решены.
-  Не поднимать их повторно без отдельного запроса.
-- Долгоживущие архитектурные решения оформляются как ADR в `docs/decisions/`,
-  если проект того требует.
+- **Each decision is recorded together with its reason.** The reason is mandatory:
+  without it the next agent will clear the decision away as junk.
+- **An agent does not reopen these on its own initiative.** Only the owner reverses them.
+- Closed topics belong here too — questions already discussed and settled. Do not raise
+  them again without being asked.
+- Durable architectural decisions are recorded as ADRs under `docs/decisions/` where a
+  project calls for it.
 
-## 8. Язык
+## 8. Language
 
-- **Отвечать владельцу по-русски.**
-- **Документация проекта — по-русски.**
-- **Идентификаторы в коде и сообщения коммитов — по-английски.**
-- **Строки интерфейса — как принято в проекте.** Если тесты завязаны на конкретные
-  строки UI, менять их синхронно с тестами.
+- **Reply to the owner in Russian.**
+- **Project documentation is written in Russian.**
+- **Code identifiers and commit messages are in English.**
+- **Agent instruction files — this file, `CLAUDE.md`, `copilot-instructions.md` — are
+  in English.** They are instructions executed by a model, not documentation for a
+  reader, which is why they are the exception to the rule above.
+- **UI strings follow the project's own convention.** Where tests assert on specific UI
+  strings, change both together.
 
-## 9. Многоагентная работа
+## 9. Working alongside other agents
 
-В репозитории может работать несколько агентов одновременно, и сессию любого из них
-могут прервать в любой момент.
+Several agents may work in a repository at once, and any of their sessions can be
+interrupted at any moment.
 
-- **Изменения держать узкими и независимо проверяемыми** — чтобы параллельный агент
-  подхватил без конфликтов.
-- **Любая задача должна оставаться возобновляемой.** Точное состояние незавершённой
-  работы — в `HANDOFF.md`.
-- **Роли могут быть разделены** (например, деплоем занимается только Watson) — это
-  пишется в правилах проекта.
+- **Keep changes narrow and independently reviewable**, so a parallel agent can pick up
+  without conflicts.
+- **Every task must stay resumable.** The exact state of unfinished work belongs in
+  `HANDOFF.md`.
+- **Roles may be split** (for example, only Watson deploys) — this is stated in the
+  project's rules.
 
-## 10. Окружение
+## 10. Environment
 
-- **Окружение эфемерное.** Настройку доступа к GitHub повторять в начале каждой
-  сессии, если она не сохраняется.
-- **Прокси среды отдаёт HTTP 403 на часть операций записи** — известны случаи
-  с `git push` тега, удалением ветки и записью через REST API. Это политика
-  окружения, а не сбой: **не обходить, а сообщать владельцу.** Там, где операция
-  всё же нужна, её выполняет workflow (например, простановка тега релиза).
+- **The environment is ephemeral.** Re-do the GitHub access setup at the start of each
+  session if it does not persist.
+- **The environment's proxy returns HTTP 403 on some write operations** — known cases
+  include pushing a tag, deleting a branch and writing through the REST API. This is
+  environment policy, not a failure: **do not work around it, report it to the owner.**
+  Where the operation is genuinely needed, a workflow performs it (release tagging, for
+  example).
 
-## 11. Проверка владельцем
+## 11. Owner review
 
-Если владелец проверяет результат вручную — ставит сборку на телефон, смотрит сайт —
-**после каждого завершённого этапа делать паузу** и дать ему проверить, прежде чем
-браться за следующий. Что именно проверяется, пишется в правилах проекта.
+Where the owner checks the result by hand — installing a build on his phone, opening the
+site — **pause after each completed stage** and let him check before starting the next
+one. What he checks is stated in the project's rules.
 
 ---
 
-## Приложение — что дописать в конкретном проекте
+## Appendix — what to add per project
 
-Этот файл копируется без изменений. Проектное дописывается ниже него или в `CLAUDE.md`:
+This file is copied unchanged. Project-specific material goes below it, or in
+`CLAUDE.md`:
 
-- **Команды** — сборка, тесты, линтер, форматирование; обязательно как запустить
-  **один** тест.
-- **Карта кода** — архитектура, точки входа, неочевидные связи.
-- **Зафиксированные решения** — с причинами (§7).
-- **Отступления от этого файла** — с причинами (§0).
-- **Дисциплина версий** — где лежит версия и что менять вместе.
-- **Деплой** — по CI или вручную, кто имеет право, что проверять после (§5).
-- **Что проверяет владелец** и на каком шаге нужна пауза (§11).
+- **Commands** — build, tests, linter, formatter; always including how to run a
+  **single** test.
+- **Map of the code** — architecture, entry points, non-obvious couplings.
+- **Settled decisions** — with reasons (§7).
+- **Departures from this file** — with reasons (§0).
+- **Version discipline** — where the version lives and what must change together.
+- **Deployment** — CI or manual, who may do it, what to verify afterwards (§5).
+- **What the owner reviews**, and at which step a pause is expected (§11).
