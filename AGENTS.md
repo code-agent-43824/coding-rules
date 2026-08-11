@@ -27,8 +27,11 @@ repository as is; anything project-specific goes in the [Appendix](#appendix--wh
 - **Each completed logical step is its own commit, pushed immediately.** Do not
   accumulate work into one large commit, and do not mix unrelated changes.
 - **The trunk is always green.** A commit that breaks the build, the tests or the
-  linter does not go into the trunk. If the trunk is already red, fixing it comes
-  before the current task.
+  linter does not go into the trunk.
+- **A red trunk outranks your own task.** If you broke it, fix it immediately. If
+  someone else did, tell the owner and get his go-ahead before touching it — another
+  agent may already be on it. Ask first, but ask right away: this comes before the
+  work you arrived to do.
 - **`git fetch` before starting work**, and make sure the local trunk is not behind:
   other agents may be working in the same repository.
 - **Before committing, run `git diff --check` and `git status`.** Do not sweep in
