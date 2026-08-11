@@ -2,18 +2,18 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Purpose
+
+This repository holds the rules coding agents are expected to follow when working on the owner's projects — instructions about agent behavior. The deliverable is the rules themselves, not application code.
+
 ## Repository state
 
-This repository is a new, empty project. As of the initial commit it contains only `README.md` and `LICENSE` (MIT) — there is no source code, package manifest, build system, test framework, or linter configuration.
+Currently `README.md`, `LICENSE` (MIT), and this file. There is no source code, package manifest, build system, test framework, or linter configuration, and therefore no build, test, lint, or run commands. Do not assume a toolchain exists or attempt to invoke one — verify against the working tree first.
 
-Per `README.md`, the project's purpose is: **rules for coding agents**.
+## Git workflow
 
-## Consequences for working here
+These override the usual branch-and-PR defaults:
 
-- There are no build, test, lint, or run commands. Do not assume a toolchain exists or attempt to invoke one — verify against the working tree first.
-- There is no architecture to preserve. The first substantive change defines the project's language, layout, and conventions, so those choices are worth confirming with the user rather than inferring.
-- When tooling is introduced, replace this section with the actual commands (including how to run a single test) and a description of the code structure.
-
-## Conventions
-
-- Default branch: `main`.
+- **Commit directly to `main`.** Do not create feature branches, and do not open pull requests for changes to this repository.
+- **All history lives on `main`.** If a branch does get created, merge it fast-forward and delete it, locally and on the remote.
+- **Commit each change separately** rather than batching unrelated edits into one commit.
