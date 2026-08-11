@@ -154,6 +154,15 @@ In addition:
 - **After deploying, verify what is live** — both your project and its neighbours on the
   same resource.
 
+When production is broken:
+
+- **Tell the owner immediately** — before investigating, before fixing. He may be
+  looking at the same outage without knowing its cause.
+- **Fix forward, with a new commit to the trunk.** A revert is an ordinary commit; the
+  bad commit stays in history. Do not rewrite history to make it disappear (§5).
+- **Once it is back up, record it in `JOURNAL`:** what broke, why, and what now stops
+  it happening again.
+
 ## 7. Secrets
 
 - **Never commit** credentials, tokens, private keys, personal data or production
