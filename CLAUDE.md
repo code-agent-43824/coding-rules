@@ -2,18 +2,29 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Purpose
+**Правила работы — в [AGENTS.md](AGENTS.md).** Прочитай его целиком и следуй ему.
+Здесь не повторяется ничего из него: две копии правил всегда расходятся.
 
-This repository holds the rules coding agents are expected to follow when working on the owner's projects — instructions about agent behavior. The deliverable is the rules themselves, not application code.
+## Чем этот репозиторий отличается
 
-## Repository state
+`AGENTS.md` здесь — не правила *для работы над этим репозиторием*, а **сам продукт**:
+канонический свод, который владелец копирует в остальные свои проекты. Правя его,
+ты меняешь правила для всех проектов сразу — соответственно и цена ошибки.
 
-Currently `README.md`, `LICENSE` (MIT), and this file. There is no source code, package manifest, build system, test framework, or linter configuration, and therefore no build, test, lint, or run commands. Do not assume a toolchain exists or attempt to invoke one — verify against the working tree first.
+Из этого следует:
 
-## Git workflow
+- **Формулировки важнее объёма.** Правило, которое можно понять двояко, будет понято
+  неправильно в каком-нибудь одном проекте из семнадцати.
+- **Не добавлять правило, которого владелец не давал.** Источники — его прямые указания
+  и файлы правил в его репозиториях. Догадка, выданная за правило, разойдётся по всем
+  проектам.
+- **Файл копируется как есть.** Ничего специфичного для конкретного проекта в него
+  не попадает — для этого в нём есть «Приложение».
+- `OPEN-QUESTIONS.md` — нерешённые и решённые вопросы по своду. Решение владельца
+  переносится в `AGENTS.md`, а в `OPEN-QUESTIONS.md` остаётся записью о том, что
+  и когда решено.
 
-These override the usual branch-and-PR defaults:
+## Состояние
 
-- **Commit directly to `main`.** Do not create feature branches, and do not open pull requests for changes to this repository.
-- **All history lives on `main`.** If a branch does get created, merge it fast-forward and delete it, locally and on the remote.
-- **Commit each change separately** rather than batching unrelated edits into one commit.
+Кода, сборки, тестов и линтера здесь нет — значит, нет и команд. Не искать тулчейн
+и не пытаться его запустить.
