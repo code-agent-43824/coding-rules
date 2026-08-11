@@ -165,7 +165,20 @@ deliberately that look like mistakes to a fresh pair of eyes.
 - Durable architectural decisions are recorded as ADRs under `docs/decisions/` where a
   project calls for it.
 
-## 8. Language
+## 8. Scope and style of changes
+
+- **Prefer clear, boring, maintainable solutions over speculative abstractions.**
+- **Add dependencies, frameworks and infrastructure only as the adopted spec and the
+  current stage require.** Anything beyond the adopted stack — including any
+  third-party cloud or external service — needs a settled decision recorded before it
+  is relied on.
+- **Add or update tests alongside the application code they cover.**
+- **Preserve unrelated work.** Inspect the state of the repository before changing it;
+  unrelated cleanup belongs in `PLAN.md` as its own item rather than folded into the
+  change at hand.
+- **UTF-8, LF line endings.**
+
+## 9. Language
 
 - **Reply to the owner in Russian.**
 - **Project documentation is written in Russian.**
@@ -176,7 +189,7 @@ deliberately that look like mistakes to a fresh pair of eyes.
 - **UI strings follow the project's own convention.** Where tests assert on specific UI
   strings, change both together.
 
-## 9. Working alongside other agents
+## 10. Working alongside other agents
 
 Several agents may work in a repository at once, and any of their sessions can be
 interrupted at any moment.
@@ -188,7 +201,7 @@ interrupted at any moment.
 - **Roles may be split** (for example, only Watson deploys) — this is stated in the
   project's rules.
 
-## 10. Environment
+## 11. Environment
 
 - **The environment is ephemeral.** Re-do the GitHub access setup at the start of each
   session if it does not persist.
@@ -198,7 +211,7 @@ interrupted at any moment.
   Where the operation is genuinely needed, a workflow performs it (release tagging, for
   example).
 
-## 11. Owner review
+## 12. Owner review
 
 Where the owner checks the result by hand — installing a build on his phone, opening the
 site — **pause after each completed stage** and let him check before starting the next
@@ -218,4 +231,4 @@ This file is copied unchanged. Project-specific material goes below it, or in
 - **Departures from this file** — with reasons (§0).
 - **Version discipline** — where the version lives and what must change together.
 - **Deployment** — CI or manual, who may do it, what to verify afterwards (§5).
-- **What the owner reviews**, and at which step a pause is expected (§11).
+- **What the owner reviews**, and at which step a pause is expected (§12).
