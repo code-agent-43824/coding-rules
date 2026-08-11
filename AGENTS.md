@@ -111,7 +111,27 @@ from the documents alone**, without reading the diff.
   say it was skipped. Part of the work is blocked — finish everything else and state
   explicitly what was left undone.
 
-## 5. Deployment
+## 5. Actions an agent does not take alone
+
+Most mistakes are undone by the next commit. These are not — so the agent stops and
+asks the owner first, however obviously right the change looks:
+
+- **Losing data.** Migrations that drop or rewrite existing data, destructive
+  fixtures, clearing any store that holds the only copy of something.
+- **Removing published artifacts.** Deleting branches, tags or releases.
+- **Rewriting history.** `force-push`, rebasing published commits, `filter-branch` and
+  the like. The trunk's history is append-only.
+- **Changing a public contract.** API shape, wire formats, stored-data formats, and
+  identifiers that other systems depend on.
+- **Revoking or replacing keys and credentials** (see §7).
+- **Anything inside someone else's system** — another project's server, a shared host,
+  a third-party account.
+
+When asking, say what would be lost, what the alternative is, and what you recommend.
+Once the owner agrees, do it and record his decision in `JOURNAL` — the next agent
+must be able to see that it was sanctioned rather than improvised.
+
+## 6. Deployment
 
 Who deploys depends on **whether the deployment needs manual work on the server**:
 
@@ -134,7 +154,7 @@ In addition:
 - **After deploying, verify what is live** — both your project and its neighbours on the
   same resource.
 
-## 6. Secrets
+## 7. Secrets
 
 - **Never commit** credentials, tokens, private keys, personal data or production
   configuration.
@@ -152,7 +172,7 @@ In addition:
   "Settled decisions" with its reason. Without that record, every later agent will keep
   raising it as a leak.
 
-## 7. Settled decisions
+## 8. Settled decisions
 
 Every project's rules carry a **"Settled decisions"** section: things decided
 deliberately that look like mistakes to a fresh pair of eyes.
@@ -165,7 +185,7 @@ deliberately that look like mistakes to a fresh pair of eyes.
 - Durable architectural decisions are recorded as ADRs under `docs/decisions/` where a
   project calls for it.
 
-## 8. Scope and style of changes
+## 9. Scope and style of changes
 
 - **Prefer clear, boring, maintainable solutions over speculative abstractions.**
 - **Add dependencies, frameworks and infrastructure only as the adopted spec and the
@@ -178,7 +198,7 @@ deliberately that look like mistakes to a fresh pair of eyes.
   change at hand.
 - **UTF-8, LF line endings.**
 
-## 9. Language
+## 10. Language
 
 - **Reply to the owner in Russian.**
 - **Project documentation is written in Russian.**
@@ -189,7 +209,7 @@ deliberately that look like mistakes to a fresh pair of eyes.
 - **UI strings follow the project's own convention.** Where tests assert on specific UI
   strings, change both together.
 
-## 10. Working alongside other agents
+## 11. Working alongside other agents
 
 Several agents may work in a repository at once, and any of their sessions can be
 interrupted at any moment.
@@ -201,7 +221,7 @@ interrupted at any moment.
 - **Roles may be split** (for example, only Watson deploys) — this is stated in the
   project's rules.
 
-## 11. Environment
+## 12. Environment
 
 - **The environment is ephemeral.** Re-do the GitHub access setup at the start of each
   session if it does not persist.
@@ -211,7 +231,7 @@ interrupted at any moment.
   Where the operation is genuinely needed, a workflow performs it (release tagging, for
   example).
 
-## 12. Owner review
+## 13. Owner review
 
 Where the owner checks the result by hand — installing a build on his phone, opening the
 site — **pause after each completed stage** and let him check before starting the next
@@ -227,8 +247,8 @@ This file is copied unchanged. Project-specific material goes below it, or in
 - **Commands** — build, tests, linter, formatter; always including how to run a
   **single** test.
 - **Map of the code** — architecture, entry points, non-obvious couplings.
-- **Settled decisions** — with reasons (§7).
+- **Settled decisions** — with reasons (§8).
 - **Departures from this file** — with reasons (§0).
 - **Version discipline** — where the version lives and what must change together.
-- **Deployment** — CI or manual, who may do it, what to verify afterwards (§5).
-- **What the owner reviews**, and at which step a pause is expected (§12).
+- **Deployment** — CI or manual, who may do it, what to verify afterwards (§6).
+- **What the owner reviews**, and at which step a pause is expected (§13).
