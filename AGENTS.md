@@ -72,6 +72,10 @@ Rules for the documents:
 - **Snapshot documents (`STATUS`, `HANDOFF`) do not update themselves.** When you check
   or change the real state, reconcile the document in the same session — do not leave a
   stale entry until someone asks.
+- **Overwrite another agent's `HANDOFF` entry only once that work is finished.**
+  Someone else's *unfinished* work is never erased — carrying it is the whole reason
+  the file exists. If you cannot tell whether it is done, treat it as unfinished and
+  leave it in place.
 - **What is not written down was not started.** Unrecorded work does not exist for the
   next agent.
 - **When code and documentation disagree, fix the documentation in the same change.**
