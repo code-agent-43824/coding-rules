@@ -56,6 +56,17 @@ is about knowledge: a hypothesis tested on hardware, the cause of a bug, a settl
   is never erased — carrying it is why the file exists. Cannot tell? Treat it as unfinished.
 - **What is not written down was not started.**
 - **When code and documentation disagree, fix the documentation in the same change.**
+- **State lives only in `STATUS`, `HANDOFF` and the project's defect list** where it keeps one.
+  `ROADMAP`, `PLAN`, `CLAUDE.md`, `README` and design documents say how it is built and why, never
+  what currently works: **a slow document never says "X is / is not implemented"** — it goes stale
+  the moment X ships, nobody greps slow documents mid-feature, and the next agent believes it.
+  Link to `STATUS` instead.
+- **A fact that already exists in code is referenced by name, not copied by value** — name the
+  constant or the file; a value retyped into prose is a second copy, and it drifts.
+- **A document must not contradict itself.** Edited a status line — read the rest of the file.
+- **Where a fact can be checked mechanically, a test checks it; a rule is not enough.** Across 24
+  releases of one project, only the fact a CI test guarded survived — but a test cannot check
+  prose, so the rules above still need care.
 - Create a document when first needed; do not pre-create empty files.
 
 ## 3. Order of work
