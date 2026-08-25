@@ -12,6 +12,8 @@ repository as is; project-specific material goes in the [Appendix](#appendix--wh
 - **Project rules extend this file; they never override it.** A necessary departure is
   stated with its reason under "Departures" in the project's `AGENTS.md`; a silent one
   is a mistake.
+- **This file is copied unchanged and never edited in place**, so a repository's documentation
+  checks must exclude it — it names files (`.github/copilot-instructions.md`) a project may lack.
 - If the owner asks otherwise on a task, that is his call — no rule broken, no change to this file.
 
 ## 1. Git
