@@ -60,9 +60,9 @@ is about knowledge: a hypothesis tested on hardware, the cause of a bug, a settl
 - **When code and documentation disagree, fix the documentation in the same change.**
 - **State lives only in `STATUS`, `HANDOFF` and the project's defect list** where it keeps one.
   `ROADMAP`, `PLAN`, `CLAUDE.md`, `README` and design documents say how it is built and why, never
-  what currently works: **a slow document never says "X is / is not implemented"** — it goes stale
-  the moment X ships, nobody greps slow documents mid-feature, and the next agent believes it.
-  Link to `STATUS` instead.
+  what currently works: **a slow document never says "X is / is not implemented"**. That sentence
+  goes stale the moment X ships, nobody greps slow documents mid-feature, and the next agent
+  believes it. Link to `STATUS` instead.
 - **A fact that already exists in code is referenced by name, not copied by value** — name the
   constant or the file; a value retyped into prose is a second copy, and it drifts.
 - **A document must not contradict itself.** Edited a status line — read the rest of the file.
@@ -83,8 +83,7 @@ is about knowledge: a hypothesis tested on hardware, the cause of a bug, a settl
 5. **Record the result in the same change as the code:** `WORKLOG` (done / next), `PLAN`
    (`[x]`/`[!]`), `STATUS` (if state changed), `JOURNAL` (if learned), `HANDOFF` (if stopping).
 
-The goal: the next agent can tell **what was planned, what shipped and what is next
-from the documents alone**, without reading the diff.
+The goal: the next agent can tell **what was planned, what shipped and what is next from the documents alone**, without reading the diff.
 
 ## 4. Verification and honest reporting
 
@@ -92,11 +91,9 @@ from the documents alone**, without reading the diff.
   no access — say so plainly. Silence reads as "checked".
 - **A green CI badge is not proof.** For build and deploy changes, read the actual logs and artifacts.
 - **Simulation is not a claim about hardware or security.** Fakes exercise logic, not devices.
-- **Close gaps with data, not reasoning.** Do not put a property into an algorithm that is not
-  in the confirmed facts: guessed changes have already produced wrong results.
+- **Close gaps with data, not reasoning.** Do not put a property into an algorithm that is not in the confirmed facts: guessed changes have already produced wrong results.
 - **Do not invent domain content** — statute text, expert commentary, readings, constants.
-- **Report the actual outcome.** Tests failed — show the output. A step was skipped — say so.
-  Work is blocked — finish the rest and name what was left undone.
+- **Report the actual outcome.** Tests failed — show the output. A step was skipped — say so. Work is blocked — finish the rest and name what was left undone.
 
 ## 5. Actions an agent does not take alone
 
@@ -146,8 +143,7 @@ commit** (a revert is ordinary; the bad one stays in history, §5); then record 
 
 ## 8. Settled decisions
 
-Every project's rules carry a **"Settled decisions"** section: things decided deliberately that
-look like mistakes to a fresh pair of eyes.
+Every project's rules carry a **"Settled decisions"** section: things decided deliberately that look like mistakes to a fresh pair of eyes.
 
 - **Each decision is recorded with its reason.** The reason is mandatory — without it the next
   agent clears the decision away as junk.
