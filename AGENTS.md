@@ -7,8 +7,8 @@ repository as is; project-specific material goes in the [Appendix](#appendix--wh
 
 - **`AGENTS.md` is the single source of rules**, read by every agent: Claude Code, Codex, Copilot, Gemini.
 - **`CLAUDE.md`, `.github/copilot-instructions.md` and `GEMINI.md` never restate the
-  rules.** They hold an import of this file plus a map of the code — architecture,
-  commands, pitfalls, what is *not* here. Two copies drift, and the stale one gets followed.
+  rules.** They hold an import of this file plus a map of the code — architecture, commands,
+  pitfalls, what is *not* here. Two copies drift, and the stale one gets followed.
 - **Project rules extend this file; they never override it.** A necessary departure is
   stated with its reason under "Departures" in the project's `AGENTS.md`; a silent one
   is a mistake.
@@ -46,16 +46,14 @@ Six documents, each answering one question. **A fact lives in exactly one of the
 
 `AGENTS.md` and `HANDOFF.md` sit in the repository root and are read first; the rest lives in `docs/`.
 
-**`WORKLOG` vs `JOURNAL`** is the easy one to get wrong. Worklog is operational — what I
-set out to do, did, and have left, so interrupted work can be picked up; a typo fix belongs
-there. Journal is about knowledge — what we now know and did not yesterday: a hypothesis
-tested on real hardware, the cause of a bug, a settled question. Routine edits never reach it.
+**`WORKLOG` vs `JOURNAL`** is the easy one to get wrong. Worklog is operational — what I set out
+to do, did, and have left, so interrupted work can be picked up; a typo fix belongs there. Journal
+is about knowledge: a hypothesis tested on hardware, the cause of a bug, a settled question.
 
 - **Never delete failed attempts from `JOURNAL`.** Each closes off a hypothesis you would return to.
 - **`STATUS` and `HANDOFF` do not update themselves.** Checked or changed the real state — reconcile them in the same session.
-- **Overwrite another agent's `HANDOFF` entry only once that work is finished.** Unfinished
-  work is never erased — carrying it is why the file exists. Cannot tell? Treat it as
-  unfinished.
+- **Overwrite another agent's `HANDOFF` entry only once that work is finished.** Unfinished work
+  is never erased — carrying it is why the file exists. Cannot tell? Treat it as unfinished.
 - **What is not written down was not started.**
 - **When code and documentation disagree, fix the documentation in the same change.**
 - Create a document when first needed; do not pre-create empty files.
@@ -69,9 +67,8 @@ tested on real hardware, the cause of a bug, a settled question. Routine edits n
    touching code**: a docs-only commit is always green.
 3. **Do the work.**
 4. **Verify it**, proportionally to the risk of the change (§4).
-5. **Record the result in the same change as the code:** `WORKLOG` (done / next),
-   `PLAN` (`[x]`/`[!]`), `STATUS` (if the project's state changed), `JOURNAL` (if
-   something was learned), `HANDOFF` (if stopping before finishing).
+5. **Record the result in the same change as the code:** `WORKLOG` (done / next), `PLAN`
+   (`[x]`/`[!]`), `STATUS` (if state changed), `JOURNAL` (if learned), `HANDOFF` (if stopping).
 
 The goal: the next agent can tell **what was planned, what shipped and what is next
 from the documents alone**, without reading the diff.
@@ -122,17 +119,15 @@ the server** is deployed by **Watson only**, and other agents do not touch produ
 - **After deploying, verify what is live** — your project and its neighbours.
 
 Production broken: **tell the owner immediately**, before investigating; **fix forward with a new
-commit** — a revert is an ordinary commit and the bad one stays in history (§5); once back up,
-record in `JOURNAL` what broke, why, and what now prevents it.
+commit** (a revert is ordinary; the bad one stays in history, §5); then record in `JOURNAL` why.
 
 ## 7. Secrets
 
 - **Never commit** credentials, tokens, private keys, personal data or production config.
 - **Keep vendor binaries out of git** — fetch them with build scripts, pinned by SHA-256.
 - **Found a secret? Report it. Do not remove it yourself, and never without the owner's
-  knowledge.** It may be a deliberate exception; deleting it from the working tree leaves it in
-  git history while suggesting the leak is closed; and revoking the key is his action in external
-  systems. Name the exact file and commit, then let him decide.
+  knowledge.** It may be a deliberate exception; deleting it from the tree leaves it in git history
+  while suggesting the leak is closed; revoking the key is his action. Name the file and commit.
 - **A deliberate exception must be explicit.** Something secret-looking committed on purpose is
   recorded under "Settled decisions" with its reason — without it, every later agent re-raises it.
 
@@ -150,9 +145,8 @@ look like mistakes to a fresh pair of eyes.
 ## 9. Scope and style of changes
 
 - **Prefer clear, boring, maintainable solutions over speculative abstractions.**
-- **Add dependencies, frameworks and infrastructure only as the adopted spec and the current
-  stage require.** Anything beyond the adopted stack, including any third-party cloud service,
-  needs a settled decision first.
+- **Add dependencies, frameworks and infrastructure only as the adopted spec and the current stage
+  require.** Anything beyond the adopted stack, cloud services included, needs a settled decision.
 - **Add or update tests alongside the code they cover.**
 - **Preserve unrelated work.** Unrelated cleanup goes into `PLAN.md` as its own item.
 - **UTF-8, LF line endings.**
@@ -168,18 +162,16 @@ look like mistakes to a fresh pair of eyes.
 
 ## 11. Working alongside other agents
 
-Several agents may work in a repository at once, and any session can be interrupted.
-
-- **Keep changes narrow and independently reviewable.**
-- **Every task must stay resumable** — unfinished state belongs in `HANDOFF.md`.
-- **Roles may be split** (only Watson deploys, for example); the project's rules say so.
+Several agents may work in a repository at once, and any session can be interrupted, so **keep
+changes narrow and independently reviewable** and **keep every task resumable** — the state of
+unfinished work belongs in `HANDOFF.md` (§2). Roles may be split; the project's rules say so.
 
 ## 12. Environment
 
 - **The environment is ephemeral.** Redo the GitHub access setup each session if it does not persist.
-- **The proxy returns HTTP 403 on some writes** — pushing a tag, deleting a branch, writing
-  through the REST API. This is policy, not a failure: **do not work around it, report it.**
-  Where the operation is genuinely needed, a workflow performs it.
+- **The proxy returns HTTP 403 on some writes** — pushing a tag, deleting a branch, writing through
+  the REST API. Policy, not a failure: **do not work around it, report it.** Where it is genuinely
+  needed, a workflow performs it.
 
 ## 13. Owner review
 
