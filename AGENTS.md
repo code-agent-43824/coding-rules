@@ -1,7 +1,7 @@
 # AGENTS.md — rules for coding agents
 
-The owner's canonical rules, shared by all of his projects. Copy this file into a
-repository as is; project-specific material goes in the [Appendix](#appendix--what-to-add-per-project).
+The owner's canonical rules, shared by all of his projects. Copy this file into a repository as is;
+project-specific material goes in that project's `CLAUDE.md` — the [Appendix](#appendix--what-to-add-per-project) lists what.
 
 ## 0. How the rules are organised
 
@@ -10,10 +10,10 @@ repository as is; project-specific material goes in the [Appendix](#appendix--wh
   rules.** They hold an import of this file plus a map of the code — architecture, commands,
   pitfalls, what is *not* here. Two copies drift, and the stale one gets followed.
 - **Project rules extend this file; they never override it.** A necessary departure is
-  stated with its reason under "Departures" in the project's `AGENTS.md`; a silent one
+  stated with its reason under "Departures" in the project's `CLAUDE.md`; a silent one
   is a mistake.
-- **This file is copied unchanged and never edited in place**, so a repository's documentation
-  checks must exclude it — it names files (`.github/copilot-instructions.md`) a project may lack.
+- **This file is copied unchanged and never appended to**, so a repository's documentation checks
+  must exclude it — it names files (`.github/copilot-instructions.md`) a project may lack.
 - If the owner asks otherwise on a task, that is his call — no rule broken, no change to this file.
 
 ## 1. Git
@@ -189,7 +189,7 @@ after each completed stage** before starting the next. What he checks is in the 
 
 ## Appendix — what to add per project
 
-This file is copied unchanged; project-specific material goes below it or in `CLAUDE.md`:
+Copied unchanged, and an update replaces it wholesale — so this goes in `CLAUDE.md`, never here:
 
 - **Commands** — build, tests, linter, formatter, and how to run a **single** test.
 - **Map of the code** — architecture, entry points, non-obvious couplings.
