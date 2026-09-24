@@ -17,13 +17,13 @@ project at once, and the rules still apply here while you do.
   way in one project out of seventeen.
 - **Never add a rule the owner did not give.** The sources are his direct instructions and the
   rule files in his repositories. A guess presented as a rule spreads everywhere.
-- **The file is copied unchanged**, so nothing project-specific goes into it. The Appendix at its
-  end is where a project adds its own material.
+- **The file is copied unchanged**, so nothing project-specific goes into it — an update replaces
+  it wholesale. Its Appendix is the checklist of what a project puts in its own `CLAUDE.md`.
 
 ## Departures from AGENTS.md
 
-The owner's decision, 2026-09-24. Recorded here rather than in `AGENTS.md`, which is the product
-and stays byte-identical to the copy every other project receives.
+The owner's decision, 2026-09-24. §0 puts departures in `CLAUDE.md` in every project; `AGENTS.md`
+stays byte-identical to the copy each one receives.
 
 - **The six project documents (§2) are not kept.** This repository is documentation only: there is
   no stage to plan, no running state to snapshot, nothing to learn about hardware.
