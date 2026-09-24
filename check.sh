@@ -5,7 +5,11 @@
 #   ./check.sh
 
 set -uo pipefail
-cd "$(dirname "$0")"
+
+repo=$(cd "$(dirname "$0")" && pwd)
+cd "$repo"
+
+MAX_LINES=200
 
 fail=0
 ok()   { printf '  ok   %s\n' "$1"; }
@@ -14,8 +18,8 @@ skip() { printf '  skip %s\n' "$1"; }
 
 echo "1. Размер свода"
 lines=$(wc -l < AGENTS.md)
-if [ "$lines" -le 200 ]; then ok "AGENTS.md: $lines строк (потолок 200)"
-else bad "AGENTS.md: $lines строк, потолок 200"; fi
+if [ "$lines" -le "$MAX_LINES" ]; then ok "AGENTS.md: $lines строк (потолок $MAX_LINES)"
+else bad "AGENTS.md: $lines строк, потолок $MAX_LINES"; fi
 
 echo "2. Перекрёстные ссылки внутри свода"
 for ref in $(grep -o '§[0-9]\+' AGENTS.md | sort -u); do
@@ -27,19 +31,22 @@ echo "3. Markdown-ссылки указывают на существующие 
 # Проверяются только настоящие ссылки [текст](путь). Упоминания в обратных кавычках —
 # это проза, она называет файлы других проектов и существовать здесь не обязана.
 # AGENTS.md исключён по §0: он копируется как есть и называет файлы, которых тут нет.
-found=0
-for f in $(ls *.md | grep -v '^AGENTS\.md$'); do
+links=0
+broken=0
+for f in *.md; do
+  [ "$f" = AGENTS.md ] && continue
   while read -r target; do
     [ -z "$target" ] && continue
     case "$target" in http*|\#*) continue;; esac
-    found=$((found+1))
-    [ -e "${target%%#*}" ] || bad "$f -> $target"
+    links=$((links+1))
+    if [ ! -e "${target%%#*}" ]; then bad "$f -> $target"; broken=$((broken+1)); fi
   done < <(grep -oE '\]\([^)]+\)' "$f" | sed 's/^](//; s/)$//')
 done
-[ "$fail" -eq 0 ] && ok "проверено ссылок: $found"
+[ "$broken" -eq 0 ] && ok "проверено ссылок: $links"
 
 echo "4. install.sh"
 if bash -n install.sh 2>/dev/null; then ok "синтаксис"; else bad "синтаксис"; fi
+
 slug=$(git remote get-url origin 2>/dev/null \
   | sed -nE 's#.*github\.com[:/]([^/]+/[^/]+?)(\.git)?/?$#\1#p')
 if [ -n "$slug" ]; then
@@ -49,7 +56,7 @@ else
 fi
 
 tmp=$(mktemp -d)
-if git init -q "$tmp" 2>/dev/null && (cd "$tmp" && bash "$OLDPWD/install.sh" >/dev/null 2>&1); then
+if git init -q "$tmp" 2>/dev/null && (cd "$tmp" && bash "$repo/install.sh" >/dev/null 2>&1); then
   if [ -s "$tmp/AGENTS.md" ] && [ "$(head -1 "$tmp/CLAUDE.md")" = '@AGENTS.md' ]; then
     ok "прогон в чистом репозитории"
   else
